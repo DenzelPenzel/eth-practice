@@ -1,3 +1,7 @@
+# Requirements
+- node: 16.13.1
+- npm: 8.1.2
+
 # Advanced Sample Hardhat Project
 
 This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.

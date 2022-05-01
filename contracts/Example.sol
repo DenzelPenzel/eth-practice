@@ -11,9 +11,9 @@ contract A {
         s.a = _a;
     }
 
-    function getA() public view returns (uint256) {
-        return s.a;
-    }
+    // function getA() public view returns (uint256) {
+    //     return s.a;
+    // }
 }
 
 contract B {

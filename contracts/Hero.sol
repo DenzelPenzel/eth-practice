@@ -33,7 +33,7 @@ contract Hero {
 
     mapping(address => uint256[]) addressToHeroes;
 
-    function generateRandom() public virtual view returns (uint256) {
+    function generateRandom() public view virtual returns (uint256) {
         // 256 bytes random number
         // block.difficulty- provided by mining pool
         return
@@ -46,7 +46,7 @@ contract Hero {
         return addressToHeroes[msg.sender];
     }
 
-    function getStrength(uint hero) public pure returns (uint32) {
+    function getStrength(uint256 hero) public pure returns (uint32) {
         // the hole dataset = 256 bits
         // [5 bits stat][5 bits stat][5 bits stat]|[5 bits stat][2 bits class name]
         // shift it and then select the first rightmost 5 bits using 11111 mask
@@ -75,7 +75,7 @@ contract Hero {
     // payable - can except money into it
     function createHero(Class heroType) public payable {
         require(msg.value >= 0.05 ether, "Please send more money");
-        
+
         // array stored in the function, memory represent the stack mem
         uint256[] memory stats = new uint256[](5);
         stats[0] = 2;

@@ -19,19 +19,31 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
-interface AInterface extends ethers.utils.Interface {
+interface ZombieFactoryInterface extends ethers.utils.Interface {
   functions: {
-    "setA(uint256)": FunctionFragment;
+    "createRandomZombie(string)": FunctionFragment;
+    "zombies(uint256)": FunctionFragment;
   };
 
-  encodeFunctionData(functionFragment: "setA", values: [BigNumberish]): string;
+  encodeFunctionData(
+    functionFragment: "createRandomZombie",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "zombies",
+    values: [BigNumberish]
+  ): string;
 
-  decodeFunctionResult(functionFragment: "setA", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "createRandomZombie",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "zombies", data: BytesLike): Result;
 
   events: {};
 }
 
-export class A extends BaseContract {
+export class ZombieFactory extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -72,37 +84,59 @@ export class A extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: AInterface;
+  interface: ZombieFactoryInterface;
 
   functions: {
-    setA(
-      _a: BigNumberish,
+    createRandomZombie(
+      _name: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    zombies(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string, BigNumber] & { name: string; dna: BigNumber }>;
   };
 
-  setA(
-    _a: BigNumberish,
+  createRandomZombie(
+    _name: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  zombies(
+    arg0: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<[string, BigNumber] & { name: string; dna: BigNumber }>;
+
   callStatic: {
-    setA(_a: BigNumberish, overrides?: CallOverrides): Promise<void>;
+    createRandomZombie(_name: string, overrides?: CallOverrides): Promise<void>;
+
+    zombies(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string, BigNumber] & { name: string; dna: BigNumber }>;
   };
 
   filters: {};
 
   estimateGas: {
-    setA(
-      _a: BigNumberish,
+    createRandomZombie(
+      _name: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    zombies(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    setA(
-      _a: BigNumberish,
+    createRandomZombie(
+      _name: string,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    zombies(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
 }

@@ -6,9 +6,11 @@ export type { A } from "./A";
 export type { B } from "./B";
 export type { Hero } from "./Hero";
 export type { TestHero } from "./TestHero";
+export type { ZombieFactory } from "./ZombieFactory";
 
 export { Counter__factory } from "./factories/Counter__factory";
 export { A__factory } from "./factories/A__factory";
 export { B__factory } from "./factories/B__factory";
 export { Hero__factory } from "./factories/Hero__factory";
 export { TestHero__factory } from "./factories/TestHero__factory";
+export { ZombieFactory__factory } from "./factories/ZombieFactory__factory";

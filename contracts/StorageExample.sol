@@ -11,12 +11,12 @@ struct StorageExample {
 
 library Storage {
     // can't overwrite it
-    bytes32 KEY = keccak256("test-storage-location");
+    // bytes32 KEY = keccak256("test-storage-location");
 
     function get() internal pure returns (StorageExample storage s) {
-        bytes32 k = KEY;
+        // bytes32 k = KEY;
         assembly {
-            s.slot := k
+            s.slot := "123"
         }
     }
 }
