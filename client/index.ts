@@ -31,7 +31,7 @@ async function run() {
   }
 
   const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || "";
-
+  
   const counter = new ethers.Contract(
     CONTRACT_ADDRESS,
     Counter.abi,

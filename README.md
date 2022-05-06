@@ -33,7 +33,7 @@ cd dist
 python -m http.server 6969
 
 npx hardhat node
-npx hardhat run scripts/deploy.ts  --network localhost
+npx hardhat run scripts/deploy.ts --network localhost
 
 cat artifacts/contracts/Hero.sol/Hero.json | jq .deployedBytecode 
 ```

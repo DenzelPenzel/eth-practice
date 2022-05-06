@@ -16,11 +16,11 @@ contract Counter {
         */
         counter++;
         console.log("Counter is now", counter);
-        emit CounterInc(counter); // 
+        emit CounterInc(counter);
     }
 
     function getCounter() public view returns (uint) {
-        return counter;
+        return uint(counter);
     }
 }
 

@@ -40,8 +40,20 @@ interface ZombieFactoryInterface extends ethers.utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "zombies", data: BytesLike): Result;
 
-  events: {};
+  events: {
+    "NewZombie(uint256,string,uint256)": EventFragment;
+  };
+
+  getEvent(nameOrSignatureOrTopic: "NewZombie"): EventFragment;
 }
+
+export type NewZombieEvent = TypedEvent<
+  [BigNumber, string, BigNumber] & {
+    zombieId: BigNumber;
+    name: string;
+    dna: BigNumber;
+  }
+>;
 
 export class ZombieFactory extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -117,7 +129,25 @@ export class ZombieFactory extends BaseContract {
     ): Promise<[string, BigNumber] & { name: string; dna: BigNumber }>;
   };
 
-  filters: {};
+  filters: {
+    "NewZombie(uint256,string,uint256)"(
+      zombieId?: null,
+      name?: null,
+      dna?: null
+    ): TypedEventFilter<
+      [BigNumber, string, BigNumber],
+      { zombieId: BigNumber; name: string; dna: BigNumber }
+    >;
+
+    NewZombie(
+      zombieId?: null,
+      name?: null,
+      dna?: null
+    ): TypedEventFilter<
+      [BigNumber, string, BigNumber],
+      { zombieId: BigNumber; name: string; dna: BigNumber }
+    >;
+  };
 
   estimateGas: {
     createRandomZombie(
