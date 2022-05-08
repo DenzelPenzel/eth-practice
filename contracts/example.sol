@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "hardhat/console.sol";
-import "./StorageExample.sol";
+import "./storage-example.sol";
 
 contract A {
     function setA(uint256 _a) public {

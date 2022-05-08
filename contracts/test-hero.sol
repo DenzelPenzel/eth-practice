@@ -1,6 +1,6 @@
 pragma solidity ^0.8.0;
 
-import "./Hero.sol";
+import "./hero.sol";
 
 contract TestHero is Hero {
     uint256 random;

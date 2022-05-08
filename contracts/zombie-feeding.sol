@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
-import "./Zombies.sol";
+import "./zombie-factory.sol";
 
 // Create KittyInterface here
 contract KittyInterface {
@@ -29,6 +29,11 @@ contract ZombieFeeding is ZombieFactory {
     // Now `kittyContract` is pointing to the other contract
     KittyInterface kittyContract;
 
+    modifier onlyOwnerOf(uint256 _zombieId) {
+        require(msg.sender == zombieToOwner[_zombieId]);
+        _;
+    }
+
     function setKittyContractAddress(address _address) external onlyOwner {
         kittyContract = KittyInterface(_address);
     }
@@ -45,9 +50,8 @@ contract ZombieFeeding is ZombieFactory {
         uint256 _zombieId,
         uint256 _targetDna,
         string memory _species
-    ) internal {
+    ) internal onlyOwnerOf(_zombieId) {
         // user is owner of zombie
-        require(msg.sender == zombieToOwner[_zombieId]);
         Zombie storage myZombie = zombies[_zombieId];
 
         require(_isReady(myZombie));

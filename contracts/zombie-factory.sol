@@ -2,9 +2,14 @@
 pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 import "./ownable.sol";
+import "./safemath.sol";
 
 contract ZombieFactory is Ownable {
     // declare our event here
+    using SafeMath for uint256;
+    using SafeMath32 for uint32;
+    using SafeMath16 for uint16;
+
     event NewZombie(uint256 zombieId, string name, uint256 dna);
 
     uint256 dnaDigits = 16;
@@ -19,16 +24,18 @@ contract ZombieFactory is Ownable {
         uint256 dna;
         uint32 level;
         uint32 readyTime;
+        uint16 winCount;
+        uint16 lossCount;
     }
 
     Zombie[] public zombies;
 
     function _createZombie(string memory _name, uint256 _dna) internal {
-        zombies.push(Zombie(_name, _dna, 1, uint32(now + cooldownTime)));
+        zombies.push(Zombie(_name, _dna, 1, uint32(now + cooldownTime), 0, 0));
         uint256 id = zombies.length - 1;
 
         zombieToOwner[id] = msg.sender;
-        ownerZombieCount[msg.sender]++;
+        ownerZombieCount[msg.sender] = ownerZombieCount[msg.sender].add(1);
 
         emit NewZombie(id, _name, _dna);
     }
