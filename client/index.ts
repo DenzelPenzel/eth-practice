@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import Counter from "../artifacts/contracts/Counter.sol/Counter.json";
+import Counter from "../artifacts/contracts/counter.sol/Counter.json";
 
 function getEth() {
   // @ts-ignore
@@ -18,10 +18,7 @@ async function hasAccounts() {
 
 async function requestAccounts() {
   const eth = getEth();
-  const accounts = (await eth.request({
-    method: "eth_requestAccounts",
-  })) as string[];
-
+  const accounts = (await eth.request({ method: "eth_requestAccounts" })) as string[];
   return accounts && accounts.length;
 }
 
@@ -31,7 +28,7 @@ async function run() {
   }
 
   const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || "";
-  
+
   const counter = new ethers.Contract(
     CONTRACT_ADDRESS,
     Counter.abi,
@@ -39,9 +36,11 @@ async function run() {
   );
 
   const el = document.createElement("div");
+
   async function setCounter(count?: number) {
     el.innerHTML = count || (await counter.getCounter());
   }
+  
   setCounter();
 
   const button = document.createElement("button");

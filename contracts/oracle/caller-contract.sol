@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
-import "./EthPriceOracleInterface.sol";
-import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "./eth-price-oracle-interface.sol";
+import "../ownable.sol";
 
 contract CallerContract is Ownable {
     uint256 private ethPrice;

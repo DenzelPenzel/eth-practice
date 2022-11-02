@@ -2,15 +2,37 @@
 /* tslint:disable */
 /* eslint-disable */
 export type { Counter } from "./Counter";
+export type { ERC721 } from "./ERC721";
 export type { A } from "./A";
 export type { B } from "./B";
 export type { Hero } from "./Hero";
+export type { CallerContractInterface } from "./CallerContractInterface";
+export type { CallerContract } from "./CallerContract";
+export type { EthPriceOracleInterface } from "./EthPriceOracleInterface";
+export type { EthPriceOracle } from "./EthPriceOracle";
+export type { Ownable } from "./Ownable";
 export type { TestHero } from "./TestHero";
+export type { ZombieAttack } from "./ZombieAttack";
 export type { ZombieFactory } from "./ZombieFactory";
+export type { KittyInterface } from "./KittyInterface";
+export type { ZombieFeeding } from "./ZombieFeeding";
+export type { ZombieHelper } from "./ZombieHelper";
+export type { ZombieOwnership } from "./ZombieOwnership";
 
 export { Counter__factory } from "./factories/Counter__factory";
+export { ERC721__factory } from "./factories/ERC721__factory";
 export { A__factory } from "./factories/A__factory";
 export { B__factory } from "./factories/B__factory";
 export { Hero__factory } from "./factories/Hero__factory";
+export { CallerContractInterface__factory } from "./factories/CallerContractInterface__factory";
+export { CallerContract__factory } from "./factories/CallerContract__factory";
+export { EthPriceOracleInterface__factory } from "./factories/EthPriceOracleInterface__factory";
+export { EthPriceOracle__factory } from "./factories/EthPriceOracle__factory";
+export { Ownable__factory } from "./factories/Ownable__factory";
 export { TestHero__factory } from "./factories/TestHero__factory";
+export { ZombieAttack__factory } from "./factories/ZombieAttack__factory";
 export { ZombieFactory__factory } from "./factories/ZombieFactory__factory";
+export { KittyInterface__factory } from "./factories/KittyInterface__factory";
+export { ZombieFeeding__factory } from "./factories/ZombieFeeding__factory";
+export { ZombieHelper__factory } from "./factories/ZombieHelper__factory";
+export { ZombieOwnership__factory } from "./factories/ZombieOwnership__factory";

@@ -8,12 +8,13 @@ contract ZombieHelper is ZombieFeeding {
 
     modifier aboveLevel(uint256 _level, uint256 _zombieId) {
         require(zombies[_zombieId].level >= _level);
+        _;
     }
 
     function withdraw() external onlyOwner {
-        address payable _owner = address(uint160(owner()));
-        // mgs.sender.transfer(msg.value) 
-        _owner.transfer(address(this).balance);
+        address _owner = owner();
+        // mgs.sender.transfer(msg.value)
+        payable(_owner).transfer(address(this).balance);
     }
 
     function setLevelUpFee(uint256 _fee) external onlyOwner {
@@ -25,17 +26,30 @@ contract ZombieHelper is ZombieFeeding {
         zombies[_zombieId].level++;
     }
 
-    function changeName(uint256 _zombieId, string calldata _newName) external aboveLevel(2, _zombieId) ownerOf(_zombieId) {
+    function changeName(uint256 _zombieId, string calldata _newName)
+        external
+        aboveLevel(2, _zombieId)
+        onlyOwnerOf(_zombieId)
+    {
         zombies[_zombieId].name = _newName;
     }
 
-    function changeDna(uint256 _zombieId, uint256 _newDna) external aboveLevel(20, _zombieId) ownerOf(_zombieId) {
+    function changeDna(uint256 _zombieId, uint256 _newDna)
+        external
+        aboveLevel(20, _zombieId)
+        onlyOwnerOf(_zombieId)
+    {
         zombies[_zombieId].dna = _newDna;
     }
 
-    function getZombiesByOwner(address _owner) external view returns (uint256[] memory) {
+    function getZombiesByOwner(address _owner)
+        external
+        view
+        returns (uint256[] memory)
+    {
         // Start here
         uint256[] memory result = new uint256[](ownerZombieCount[_owner]);
+        uint256 counter = 0;
 
         for (uint256 i = 0; i < zombies.length; i++) {
             if (zombieToOwner[i] == _owner) {

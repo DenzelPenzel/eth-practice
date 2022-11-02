@@ -19,21 +19,14 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
-interface ZombieFactoryInterface extends ethers.utils.Interface {
+interface OwnableInterface extends ethers.utils.Interface {
   functions: {
-    "createRandomZombie(string)": FunctionFragment;
     "isOwner()": FunctionFragment;
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
-    "zombieToOwner(uint256)": FunctionFragment;
-    "zombies(uint256)": FunctionFragment;
   };
 
-  encodeFunctionData(
-    functionFragment: "createRandomZombie",
-    values: [string]
-  ): string;
   encodeFunctionData(functionFragment: "isOwner", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
@@ -44,19 +37,7 @@ interface ZombieFactoryInterface extends ethers.utils.Interface {
     functionFragment: "transferOwnership",
     values: [string]
   ): string;
-  encodeFunctionData(
-    functionFragment: "zombieToOwner",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "zombies",
-    values: [BigNumberish]
-  ): string;
 
-  decodeFunctionResult(
-    functionFragment: "createRandomZombie",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "isOwner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
@@ -67,34 +48,19 @@ interface ZombieFactoryInterface extends ethers.utils.Interface {
     functionFragment: "transferOwnership",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "zombieToOwner",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "zombies", data: BytesLike): Result;
 
   events: {
-    "NewZombie(uint256,string,uint256)": EventFragment;
     "OwnershipTransferred(address,address)": EventFragment;
   };
 
-  getEvent(nameOrSignatureOrTopic: "NewZombie"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
 }
-
-export type NewZombieEvent = TypedEvent<
-  [BigNumber, string, BigNumber] & {
-    zombieId: BigNumber;
-    name: string;
-    dna: BigNumber;
-  }
->;
 
 export type OwnershipTransferredEvent = TypedEvent<
   [string, string] & { previousOwner: string; newOwner: string }
 >;
 
-export class ZombieFactory extends BaseContract {
+export class Ownable extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -135,14 +101,9 @@ export class ZombieFactory extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: ZombieFactoryInterface;
+  interface: OwnableInterface;
 
   functions: {
-    createRandomZombie(
-      _name: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
     isOwner(overrides?: CallOverrides): Promise<[boolean]>;
 
     owner(overrides?: CallOverrides): Promise<[string]>;
@@ -155,31 +116,7 @@ export class ZombieFactory extends BaseContract {
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
-
-    zombieToOwner(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[string]>;
-
-    zombies(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<
-      [string, BigNumber, number, number, number, number] & {
-        name: string;
-        dna: BigNumber;
-        level: number;
-        readyTime: number;
-        winCount: number;
-        lossCount: number;
-      }
-    >;
   };
-
-  createRandomZombie(
-    _name: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
 
   isOwner(overrides?: CallOverrides): Promise<boolean>;
 
@@ -194,25 +131,7 @@ export class ZombieFactory extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
-  zombieToOwner(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
-
-  zombies(
-    arg0: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<
-    [string, BigNumber, number, number, number, number] & {
-      name: string;
-      dna: BigNumber;
-      level: number;
-      readyTime: number;
-      winCount: number;
-      lossCount: number;
-    }
-  >;
-
   callStatic: {
-    createRandomZombie(_name: string, overrides?: CallOverrides): Promise<void>;
-
     isOwner(overrides?: CallOverrides): Promise<boolean>;
 
     owner(overrides?: CallOverrides): Promise<string>;
@@ -223,46 +142,9 @@ export class ZombieFactory extends BaseContract {
       newOwner: string,
       overrides?: CallOverrides
     ): Promise<void>;
-
-    zombieToOwner(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<string>;
-
-    zombies(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<
-      [string, BigNumber, number, number, number, number] & {
-        name: string;
-        dna: BigNumber;
-        level: number;
-        readyTime: number;
-        winCount: number;
-        lossCount: number;
-      }
-    >;
   };
 
   filters: {
-    "NewZombie(uint256,string,uint256)"(
-      zombieId?: null,
-      name?: null,
-      dna?: null
-    ): TypedEventFilter<
-      [BigNumber, string, BigNumber],
-      { zombieId: BigNumber; name: string; dna: BigNumber }
-    >;
-
-    NewZombie(
-      zombieId?: null,
-      name?: null,
-      dna?: null
-    ): TypedEventFilter<
-      [BigNumber, string, BigNumber],
-      { zombieId: BigNumber; name: string; dna: BigNumber }
-    >;
-
     "OwnershipTransferred(address,address)"(
       previousOwner?: string | null,
       newOwner?: string | null
@@ -281,11 +163,6 @@ export class ZombieFactory extends BaseContract {
   };
 
   estimateGas: {
-    createRandomZombie(
-      _name: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
     isOwner(overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
@@ -298,21 +175,9 @@ export class ZombieFactory extends BaseContract {
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
-
-    zombieToOwner(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    zombies(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
   };
 
   populateTransaction: {
-    createRandomZombie(
-      _name: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
     isOwner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -324,16 +189,6 @@ export class ZombieFactory extends BaseContract {
     transferOwnership(
       newOwner: string,
       overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    zombieToOwner(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    zombies(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
   };
 }

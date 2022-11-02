@@ -1,4 +1,3 @@
-// SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
 import "./zombie-factory.sol";
@@ -6,8 +5,9 @@ import "./zombie-factory.sol";
 // Create KittyInterface here
 contract KittyInterface {
     function getKitty(uint256 _id)
-        external
+        public
         view
+        virtual
         returns (
             bool isGestating,
             bool isReady,
@@ -19,7 +19,9 @@ contract KittyInterface {
             uint256 sireId,
             uint256 generation,
             uint256 genes
-        );
+        ) {
+            return (true,true,0,0,0,0,0,0,0,0);
+        }
 }
 
 contract ZombieFeeding is ZombieFactory {
@@ -39,11 +41,11 @@ contract ZombieFeeding is ZombieFactory {
     }
 
     function _triggerCooldown(Zombie storage _zombie) internal {
-        _zombie.readyTime = uint32(now + cooldownTime);
+        _zombie.readyTime = uint32(block.timestamp + cooldownTime);
     }
 
     function _isReady(Zombie storage _zombie) internal view returns (bool) {
-        return (_zombie.readyTime <= now);
+        return (_zombie.readyTime <= block.timestamp);
     }
 
     function feedAndMultiply(

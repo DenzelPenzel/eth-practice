@@ -19,12 +19,14 @@ import { Listener, Provider } from "@ethersproject/providers";
 import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
 import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
 
-interface ZombieFactoryInterface extends ethers.utils.Interface {
+interface ZombieFeedingInterface extends ethers.utils.Interface {
   functions: {
     "createRandomZombie(string)": FunctionFragment;
+    "feedOnKitty(uint256,uint256)": FunctionFragment;
     "isOwner()": FunctionFragment;
     "owner()": FunctionFragment;
     "renounceOwnership()": FunctionFragment;
+    "setKittyContractAddress(address)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "zombieToOwner(uint256)": FunctionFragment;
     "zombies(uint256)": FunctionFragment;
@@ -34,11 +36,19 @@ interface ZombieFactoryInterface extends ethers.utils.Interface {
     functionFragment: "createRandomZombie",
     values: [string]
   ): string;
+  encodeFunctionData(
+    functionFragment: "feedOnKitty",
+    values: [BigNumberish, BigNumberish]
+  ): string;
   encodeFunctionData(functionFragment: "isOwner", values?: undefined): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setKittyContractAddress",
+    values: [string]
   ): string;
   encodeFunctionData(
     functionFragment: "transferOwnership",
@@ -57,10 +67,18 @@ interface ZombieFactoryInterface extends ethers.utils.Interface {
     functionFragment: "createRandomZombie",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "feedOnKitty",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "isOwner", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setKittyContractAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -94,7 +112,7 @@ export type OwnershipTransferredEvent = TypedEvent<
   [string, string] & { previousOwner: string; newOwner: string }
 >;
 
-export class ZombieFactory extends BaseContract {
+export class ZombieFeeding extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
   attach(addressOrName: string): this;
   deployed(): Promise<this>;
@@ -135,11 +153,17 @@ export class ZombieFactory extends BaseContract {
     toBlock?: string | number | undefined
   ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
 
-  interface: ZombieFactoryInterface;
+  interface: ZombieFeedingInterface;
 
   functions: {
     createRandomZombie(
       _name: string,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    feedOnKitty(
+      _zombieId: BigNumberish,
+      _kittyId: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -148,6 +172,11 @@ export class ZombieFactory extends BaseContract {
     owner(overrides?: CallOverrides): Promise<[string]>;
 
     renounceOwnership(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
+    setKittyContractAddress(
+      _address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
@@ -181,11 +210,22 @@ export class ZombieFactory extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  feedOnKitty(
+    _zombieId: BigNumberish,
+    _kittyId: BigNumberish,
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
   isOwner(overrides?: CallOverrides): Promise<boolean>;
 
   owner(overrides?: CallOverrides): Promise<string>;
 
   renounceOwnership(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
+
+  setKittyContractAddress(
+    _address: string,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
@@ -213,11 +253,22 @@ export class ZombieFactory extends BaseContract {
   callStatic: {
     createRandomZombie(_name: string, overrides?: CallOverrides): Promise<void>;
 
+    feedOnKitty(
+      _zombieId: BigNumberish,
+      _kittyId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     isOwner(overrides?: CallOverrides): Promise<boolean>;
 
     owner(overrides?: CallOverrides): Promise<string>;
 
     renounceOwnership(overrides?: CallOverrides): Promise<void>;
+
+    setKittyContractAddress(
+      _address: string,
+      overrides?: CallOverrides
+    ): Promise<void>;
 
     transferOwnership(
       newOwner: string,
@@ -286,11 +337,22 @@ export class ZombieFactory extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    feedOnKitty(
+      _zombieId: BigNumberish,
+      _kittyId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     isOwner(overrides?: CallOverrides): Promise<BigNumber>;
 
     owner(overrides?: CallOverrides): Promise<BigNumber>;
 
     renounceOwnership(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
+    setKittyContractAddress(
+      _address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
@@ -313,11 +375,22 @@ export class ZombieFactory extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 
+    feedOnKitty(
+      _zombieId: BigNumberish,
+      _kittyId: BigNumberish,
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     isOwner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     renounceOwnership(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setKittyContractAddress(
+      _address: string,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
 

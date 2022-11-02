@@ -5,7 +5,6 @@ import "./ownable.sol";
 import "./safemath.sol";
 
 contract ZombieFactory is Ownable {
-    // declare our event here
     using SafeMath for uint256;
     using SafeMath32 for uint32;
     using SafeMath16 for uint16;
@@ -31,7 +30,14 @@ contract ZombieFactory is Ownable {
     Zombie[] public zombies;
 
     function _createZombie(string memory _name, uint256 _dna) internal {
-        Zombie memory zobmie = Zombie(_name, _dna, 1, uint32(now + cooldownTime), 0, 0);
+        Zombie memory zobmie = Zombie(
+            _name,
+            _dna,
+            1,
+            uint32(block.timestamp + cooldownTime),
+            0,
+            0
+        );
         zombies.push(zobmie);
         uint256 id = zombies.length - 1;
 
@@ -41,7 +47,11 @@ contract ZombieFactory is Ownable {
         emit NewZombie(id, _name, _dna);
     }
 
-    function _generateRandomDna(string memory _str) private view returns (uint256) {
+    function _generateRandomDna(string memory _str)
+        private
+        view
+        returns (uint256)
+    {
         uint256 rand = uint256(keccak256(abi.encodePacked(_str)));
         return rand % dnaModulus;
     }
