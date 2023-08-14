@@ -26,27 +26,23 @@ contract ZombieHelper is ZombieFeeding {
         zombies[_zombieId].level++;
     }
 
-    function changeName(uint256 _zombieId, string calldata _newName)
-        external
-        aboveLevel(2, _zombieId)
-        onlyOwnerOf(_zombieId)
-    {
+    function changeName(
+        uint256 _zombieId,
+        string calldata _newName
+    ) external aboveLevel(2, _zombieId) onlyOwnerOf(_zombieId) {
         zombies[_zombieId].name = _newName;
     }
 
-    function changeDna(uint256 _zombieId, uint256 _newDna)
-        external
-        aboveLevel(20, _zombieId)
-        onlyOwnerOf(_zombieId)
-    {
+    function changeDna(
+        uint256 _zombieId,
+        uint256 _newDna
+    ) external aboveLevel(20, _zombieId) onlyOwnerOf(_zombieId) {
         zombies[_zombieId].dna = _newDna;
     }
 
-    function getZombiesByOwner(address _owner)
-        external
-        view
-        returns (uint256[] memory)
-    {
+    function getZombiesByOwner(
+        address _owner
+    ) external view returns (uint256[] memory) {
         // Start here
         uint256[] memory result = new uint256[](ownerZombieCount[_owner]);
         uint256 counter = 0;
