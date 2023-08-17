@@ -8,9 +8,9 @@ function add(uint x, uint y) external pure returns (uint) {
 This function returns the sum of two numbers x and y.
 
 What are external and pure?
-external tells Solidity that this function can only be called from outside this contract.
+    - external tells Solidity that this function can only be called from outside this contract.
 
-pure tells Solidity that this function does not write anything to the blockchain.
+    - pure tells Solidity that this function does not write anything to the blockchain.
 
 Don't worry if that didn't make sense.
 
