@@ -6,6 +6,10 @@ The process of verifying a signature is 3 steps.
     Sign the message hash (off chain).
     Verify signature (call smart contract).
 
+Task: 
+    - Complete testSignature. 
+        This function will verify that _signer signed the message "secret". 
+        If the signature is valid, set signed to true. Otherwise throw an error.
 */
 
 // SPDX-License-Identifier: MIT
@@ -75,5 +79,11 @@ contract VerifySig {
     function testSignature(address _signer, bytes memory _sig) external {
         string memory message = "secret";
         // Write code here
+        bytes32 messageHash = getMessageHash(message);
+        bytes32 ethSignedMessageHash = getEthSignedMessageHash(messageHash);
+
+        require(recover(ethSignedMessageHash, _sig) == _signer, "invalid sig");
+
+        signed = true;
     }
 }
