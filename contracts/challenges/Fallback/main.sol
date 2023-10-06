@@ -6,7 +6,7 @@ For example, call doesNotExist(), this will trigger the fallback function.
 Receive Ether
 fallback function declared as external payable is commonly used to enable the contract to receive Ether.
 
-There is a slight variation of the fallback called receive.
+There is a slight variation of the fallback called `receive`.
 
 receive() external payable is called if msg.data is empty.
 
