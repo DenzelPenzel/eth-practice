@@ -42,8 +42,6 @@ Tasks:
 
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
-// SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
 
 contract MultiSigWallet {
     event Deposit(address indexed sender, uint amount);

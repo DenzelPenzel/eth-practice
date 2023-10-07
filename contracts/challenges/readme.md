@@ -4,3 +4,7 @@
 - Verifying Signature
 - Re-Entrancy
 - Wallet Hijack
+- Misaligned Storage
+- Bypass Contract Size
+- Multi Token Bank
+- ETH Flash Loan
