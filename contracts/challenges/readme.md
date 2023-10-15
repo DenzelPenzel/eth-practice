@@ -9,3 +9,5 @@
 - Multi Token Bank
 - ETH Flash Loan
 - Function Selector
+- ERC721
+- Reentrancy Guard
