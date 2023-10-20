@@ -8,7 +8,8 @@
 - Bypass Contract Size
 - Multi Token Bank
 - ETH Flash Loan
-- Function Selector
+- Function Selector and Function Selector Clash
 - ERC721
 - Reentrancy Guard
 - Signature Replay Attack
+- Multi Delegatecall

