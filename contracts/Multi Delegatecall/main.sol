@@ -29,23 +29,8 @@ Tasks:
         This will enable func1 and func2 to be called sequentially in a single transactions.
 */
 
-
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
-
-contract MultiDelegatecall {
-    function multiDelegatecall(
-        bytes[] calldata data
-    ) external payable returns (bytes[] memory results) {
-        // code here
-        for (uint i = 0; i < data.length; i++) {
-            (bool success, bytes memory res) = address(this).delegatecall(data[i]);
-            require(success, "tx failed");
-            results.push(res);
-        }
-        return results;
-    }
-}
 
 contract TestMultiDelegatecall {
     event Log(address caller, string func, uint i);
@@ -57,5 +42,24 @@ contract TestMultiDelegatecall {
     function func2() external returns (uint) {
         emit Log(msg.sender, "func2", 2);
         return 111;
+    }
+}
+
+contract MultiDelegatecall {
+    function multiDelegatecall(
+        bytes[] calldata data
+    ) external payable returns (bytes[] memory results) {
+        // code here
+        results = new bytes[](data.length);
+        for (uint i = 0; i < data.length; i++) {
+            (bool success, bytes memory res) = address(this).delegatecall(
+                data[i]
+            );
+            if (!success) {
+                revert DelegatecallFailed();
+            }
+            results[i] = res;
+        }
+        return results;
     }
 }
