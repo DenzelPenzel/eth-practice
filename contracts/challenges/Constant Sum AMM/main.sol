@@ -1,11 +1,10 @@
 /*
-
 Constant sum AMM (automated market maker) is a decentralized exchange that trades two tokens in the contract.
 
 Users will be able to add liquidity and earn swap fees, swap tokens and remove liquidity.
 
 Why is it called constant sum?
-    The amount of token to come out of the trade is determined by the following equation.
+The amount of token to come out of the trade is determined by the following equation.
 
 X = amount of token A in the contract
 Y = amount of token B in the contract
@@ -40,20 +39,18 @@ dx = dy
 
 In other words, the amount of token coming in from a swap must equal the amount of token going out.
 
-
 Tasks:
     - Complete internal functions _mint
+
         function _mint(address _to, uint _amount) private {}
 
         The function _mint mints must increment totalSupply and balanceOf _to by _amount.
-
 
     - Complete internal functions _burn
 
         function _burn(address _from, uint _amount) private {}
 
-        The function _burn must decrement totalSupply and balanceOf _from by _amount.
-
+        The function _burn must decrement totalSupply and balanceOf _from by _amount
 
     - Complete function addLiquidity
 
@@ -70,7 +67,6 @@ Tasks:
         Mint shares proportional to the increase in liquidity to msg.sender. Liquidity is the total amount of tokens in the contract. (reserve0 + reserve1).
         This function must fail if shares to mint is 0.
         Update reserve0 and reserve1. These state variables internally track the amount of token0 and token1 in this contract.
-
 
     - Complete function swap
 
@@ -101,6 +97,8 @@ Tasks:
         Transfers token0 and token1 out to msg.sender.
         Amounts of token to transfer out, d0 and d1 must be proportional to the amount of _shares to burn.
         Update reserve0 and reserve1.
+
+
 */
 
 // SPDX-License-Identifier: MIT
@@ -182,7 +180,7 @@ contract CSAMM {
         uint d1 = bal1 - reserve1;
 
         uint shares;
-         /*
+        /*
             a = amount in
             L = total liquidity
             s = shares to mint
@@ -194,11 +192,11 @@ contract CSAMM {
             s = a * T / L
         */
         if (totalSupply > 0) {
-            shares = ((d0 + d1)* totalSupply) / (reserve0 + reserve1);
+            shares = ((d0 + d1) * totalSupply) / (reserve0 + reserve1);
         } else {
             shares = (d0 + d1);
         }
-        
+
         require(shares > 0, "shares <= 0");
 
         _mint(msg.sender, shares);
@@ -223,8 +221,8 @@ contract CSAMM {
             a = L * s / T
             = (reserve0 + reserve1) * s / T
         */
-        d0 = _shares * reserve0 / totalSupply;
-        d1 = _shares * reserve1 / totalSupply;
+        d0 = (_shares * reserve0) / totalSupply;
+        d1 = (_shares * reserve1) / totalSupply;
 
         _burn(msg.sender, _shares);
         _update(reserve0 - d0, reserve1 - d1);
@@ -236,6 +234,5 @@ contract CSAMM {
         if (d1 > 0) {
             token1.transfer(msg.sender, d1);
         }
-
     }
 }
