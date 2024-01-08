@@ -16,4 +16,36 @@
 - Time Lock
 - WETH Bank Hack and WETH
 - Vault
+
+
 - Constant Sum AMM
+- Constant Product AMM
+- Staking Rewards
+- Debug with Hardhat
+- Bitwise Operators
+- Most Significant Bit
+- Discrete Staking Rewards
+- Unchecked Math
+- Simple Bytecode Contract
+- Custom Error
+- Fallback Input and Output
+- Write to Any Slot
+- Transparent Upgradeable Proxy
+- Gasless Token Transfer
+- ERC1155
+- Assembly Variable
+- Assembly If
+- Assembly Error
+- Assembly Loop
+- Assembly Math
+- Assembly Binary Exponentiation
+- Uniswap V2 Single Hop Swap
+- Uniswap V2 Multi Hop Swap
+- Uniswap V2 Add and Remove Liquidity
+- Uniswap V2 Flash Swap
+- Uniswap V3 Single Hop Swap
+- Uniswap V3 Multi Hop Swap
+- Uniswap V3 Liquidity
+- Uniswap V3 Flash
+- Uniswap V3 Flash Swap Arbitrage
+- Chainlink Price Oracle

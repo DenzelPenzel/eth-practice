@@ -5,7 +5,6 @@ Deposit ETH to mint WETH, burn WETH to withdraw ETH.
 
 Here is the ERC20 contract that will be used for this challenge
 
-
 Tasks:
     - Declare ERC20 as the parent contract of WETH.
         Next, initialize the constructor of ERC20 with the following inputs.
